@@ -9,16 +9,17 @@ import (
 	"strings"
 )
 
+// TODO: change to dynamic
 var currFileDir = "mnt/voldata/"
 var UserDirection = ""
 
-func HandleUpload(files multipart.Form, userName string) error {
+func HandleUpload(files multipart.Form, userFileDir string) error {
 
 	if len(files.File["attachments"]) <= 0 {
 		return errors.New("Files Empty")
 	}
 
-	getUserDir(userName)
+	getUserDir(userFileDir)
 
 	_, err := os.Stat(UserDirection)
 
@@ -53,14 +54,16 @@ func HandleUpload(files multipart.Form, userName string) error {
 	return nil
 }
 
+// TODO: get parent path out of config.json
+
 // Gets the user dir
 // if username contains an ";" it has specifiet an direction
 // userName;Directory
-func getUserDir(userName string) {
+func getUserDir(userFileDir string) {
 
-	if strings.Contains(userName, ";") {
-		splitetusr := strings.Split(userName, ";")
+	if strings.Contains(userFileDir, ";") {
+		splitetusr := strings.Split(userFileDir, ";")
 		UserDirection = path.Join(currFileDir, splitetusr[0], splitetusr[1])
 	}
-	UserDirection = path.Join(currFileDir, userName)
+	UserDirection = path.Join(currFileDir, userFileDir)
 }
