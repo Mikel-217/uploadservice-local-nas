@@ -6,21 +6,6 @@ import (
 	logging "mikel-kunze.com/uploadservice/Logging"
 )
 
-// Sets a new Active token to DB
-func SetNewToken(token string, expiration time.Time) {
-	db := CreateDBCon()
-
-	if db == nil {
-		logging.LogEntry("[Error]", "Cannot connect to db!")
-	}
-
-	defer db.Close()
-
-	if _, err := db.Exec("INSERT INTO ActiveAccessTokens (TokenID, ActiveToken, ExpirationDate) VALUES (DEFAULT, ?, ?)", token, expiration); err != nil {
-		logging.LogEntry("[Error]", err.Error())
-	}
-}
-
 // Gets a user by the given username --> Returns a Userstruct
 func GetUserByName(userName string) UserStruct {
 	db := CreateDBCon()

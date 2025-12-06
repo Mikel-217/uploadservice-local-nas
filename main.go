@@ -49,6 +49,7 @@ func httpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// TODO: check function and refactor
 func sendNewAccess(w http.ResponseWriter, r *http.Request) {
 	credentials := r.Header.Get("Authorization")
 	encoded, err := base64.StdEncoding.DecodeString(credentials)
@@ -71,7 +72,7 @@ func sendNewAccess(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Header().Set("Content-Type", "text/plain")
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write([]byte(token))
 		return
 	}

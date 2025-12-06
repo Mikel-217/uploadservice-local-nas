@@ -65,7 +65,7 @@ func GenerateNewAccesstoken(username string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
 	tokenString, err := token.SignedString(JWTKey)
 
-	database.SetNewToken(tokenString, expiraionTime)
+	database.CreateNewToken(tokenString, expiraionTime)
 
 	return tokenString, err
 }
