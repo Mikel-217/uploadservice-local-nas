@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// does somethings on startup
 func OnServerStartup() (bool, error) {
 	succesDB := checkDB()
 
@@ -30,4 +31,6 @@ func checkDB() bool {
 }
 
 // gets the JWT-Key out of enviorment variables --> Key is the jwt secret
-func GetKey() []byte { return nil }
+func GetKey() []byte {
+	return []byte(os.Getenv("jwt-key"))
+}
