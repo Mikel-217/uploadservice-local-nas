@@ -9,7 +9,8 @@ import (
 	"strings"
 )
 
-// TODO: change to dynamic
+// TODO: change to dynamic for win and linux
+// TODO: refactor
 var currFileDir = "mnt/voldata/"
 var UserDirection = ""
 
@@ -55,6 +56,7 @@ func HandleUpload(files multipart.Form, userFileDir string) error {
 }
 
 // TODO: get parent path out of config.json
+// TODO: get user dir via DB
 
 // Gets the user dir
 // if username contains an ";" it has specifiet an direction
