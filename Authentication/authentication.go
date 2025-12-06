@@ -8,23 +8,24 @@ import (
 	database "mikel-kunze.com/uploadservice/Database"
 )
 
-// TODO: get this also out of conf.json
-var jwtKey = []byte("")
+// The secret
+var JWTKey = []byte("")
 
+// Checks for a valide jwt token and if the token is saved in the database
 func AuthorizeWithToken(token string) (bool, string) {
 
 	strings.Replace(token, "Baerer", "", 0)
 
 	// to validate JWT
 	claims := Claims{}
-	tkn, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) { return jwtKey, nil })
+	tkn, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) { return JWTKey, nil })
 
 	if err != nil || !tkn.Valid {
 		return false, ""
 	}
 
 	// searches the token in the DB
-	if !database.GetToken(token) {
+	if !database.CheckTokenExistence(token) {
 		return false, ""
 	}
 
@@ -37,7 +38,7 @@ func AuthorizeWithToken(token string) (bool, string) {
 	return true, tokenClaims.Username
 }
 
-// If the User has no token
+// If the User has no token --> he gets a new one
 func AuthorizeWithOutToken(authData string) (bool, string) {
 
 	credentials := strings.Split(authData, ";")
@@ -62,7 +63,7 @@ func GenerateNewAccesstoken(username string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	tokenString, err := token.SignedString(JWTKey)
 
 	database.SetNewToken(tokenString, expiraionTime)
 

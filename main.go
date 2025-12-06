@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"log"
 	"net/http"
 
 	authen "mikel-kunze.com/uploadservice/Authentication"
@@ -10,8 +11,16 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
+	correctSetup, err := OnServerStartup()
 
+	if !correctSetup {
+		log.Fatal("Failed to start", err)
+	}
+
+	// sets the jwt secret. Is needed bevor startup!s
+	authen.JWTKey = GetKey()
+
+	mux := http.NewServeMux()
 	mux.HandleFunc("/api/auth", sendNewAccess)
 	mux.HandleFunc("/api/file/2/", httpFileUploadRequest)
 

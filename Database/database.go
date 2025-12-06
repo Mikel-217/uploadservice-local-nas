@@ -10,4 +10,4 @@ func SetNewToken(token string, expiration time.Time) {}
 
 func GetUserByName(userName string) UserStruct { return UserStruct{} }
 
-func GetToken(token string) bool { return false }
+func CheckTokenExistence(token string) bool { return false }
