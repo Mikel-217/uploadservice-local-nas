@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -21,9 +22,14 @@ func main() {
 	authen.JWTKey = GetKey()
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/api/users/2/", CreateNewUser)
+	mux.HandleFunc("/api/users/3/", DeleteUser)
+
 	mux.HandleFunc("/api/auth", sendNewAccess)
+
 	mux.HandleFunc("/api/file/2/", httpFileUploadRequest)
 
+	fmt.Println("Started successfull")
 	http.ListenAndServe(":8080", mux)
 }
 

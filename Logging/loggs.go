@@ -9,14 +9,15 @@ import (
 func LogEntry(logType string, content string) {
 	file := GetLogFile()
 
-	currLogFile, err := os.Open(file)
+	currLogFile, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer currLogFile.Close()
 
-	if _, err := currLogFile.WriteString(time.Now().GoString() + logType + content); err != nil {
+	if _, err := currLogFile.WriteString(time.Now().Format("2006/01/02 15:04:05") + logType + content); err != nil {
 		log.Fatal(err)
 	}
 }

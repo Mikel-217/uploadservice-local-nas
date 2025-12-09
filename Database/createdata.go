@@ -22,6 +22,7 @@ func CreateNewToken(token string, expiration time.Time) {
 	}
 }
 
+// Creates a new user
 func CreateNewUser(user UserStruct) {
 	db := CreateDBCon()
 

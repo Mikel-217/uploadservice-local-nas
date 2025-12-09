@@ -4,12 +4,14 @@ import (
 	"errors"
 	"log"
 	"os"
+	"path"
 	"time"
 )
 
 func GetLogFile() string {
 	currDir, _ := os.Getwd()
 	currDir += "\\loggs"
+
 	if _, err := os.Stat(currDir); errors.Is(err, os.ErrNotExist) {
 		os.Mkdir(currDir, os.ModeDir)
 	}
@@ -34,13 +36,17 @@ func GetLogFile() string {
 		}
 	}
 
-	newLogFile := time.Now().Format("dd-mm-yyyy") + ".txt"
+	date := time.Now().Truncate(24 * time.Hour)
+	const formatString = "02-01-2006"
+	newLogFile := date.Format(formatString) + ".log"
 
-	nFile, err := os.Create(newLogFile)
+	nFile, err := os.Create(path.Join(currDir, newLogFile))
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	defer nFile.Close()
 
 	return nFile.Name()
 }
