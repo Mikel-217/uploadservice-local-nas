@@ -19,7 +19,7 @@ func LogEntry(logType string, content string) {
 
 	defer currLogFile.Close()
 
-	if _, err := currLogFile.WriteString(time.Now().Format("2006/01/02 15:04:05") + logType + content); err != nil {
+	if _, err := currLogFile.WriteString("\n" + time.Now().Format("2006/01/02 15:04:05") + logType + content); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Logged entry")

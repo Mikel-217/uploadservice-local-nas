@@ -29,8 +29,8 @@ func GetLogFile() string {
 			continue
 		}
 
-		if time.Time.Equal(time.Now(), fileInfo.ModTime()) {
-			return file.Name()
+		if time.Now().Format(time.DateOnly) == fileInfo.ModTime().Format(time.DateOnly) {
+			return path.Join(currDir, file.Name())
 		} else {
 			continue
 		}
