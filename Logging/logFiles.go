@@ -10,7 +10,7 @@ import (
 
 func GetLogFile() string {
 	currDir, _ := os.Getwd()
-	currDir += "\\loggs"
+	currDir += "\\logs"
 
 	if _, err := os.Stat(currDir); errors.Is(err, os.ErrNotExist) {
 		os.Mkdir(currDir, os.ModeDir)

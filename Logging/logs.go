@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// FIXMEEEEEE --> only one logentryw
 func LogEntry(logType string, content string) {
 	file := GetLogFile()
 
