@@ -6,7 +6,9 @@ import (
 	"net/http"
 
 	authen "mikel-kunze.com/uploadservice/Authentication"
-	upload "mikel-kunze.com/uploadservice/Upload"
+	directorys "mikel-kunze.com/uploadservice/FileHandling/Directory"
+	files "mikel-kunze.com/uploadservice/FileHandling/Files"
+
 	users "mikel-kunze.com/uploadservice/User"
 )
 
@@ -26,7 +28,9 @@ func main() {
 
 	mux.HandleFunc("/api/auth", authen.SendNewAccess)
 
-	mux.HandleFunc("/api/file/2", upload.HttpFileUploadRequest)
+	mux.HandleFunc("/api/file/2", files.HttpFileUploadRequest)
+	mux.HandleFunc("/api/dir/2", directorys.HttpDirRequest)
+	mux.HandleFunc("/api/dir/3", directorys.HttpDirRequest)
 
 	fmt.Println("Started successfull")
 	fmt.Println(http.ListenAndServe(":8080", mux))

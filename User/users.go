@@ -10,6 +10,7 @@ import (
 	logging "mikel-kunze.com/uploadservice/Logging"
 )
 
+// TODO: Add authentication!!
 func CreateNewUser(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
