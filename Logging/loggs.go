@@ -1,6 +1,7 @@
 package logging
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -20,4 +21,5 @@ func LogEntry(logType string, content string) {
 	if _, err := currLogFile.WriteString(time.Now().Format("2006/01/02 15:04:05") + logType + content); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Logged entry")
 }

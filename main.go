@@ -22,12 +22,12 @@ func main() {
 	authen.JWTKey = GetKey()
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/users/2/", CreateNewUser)
-	mux.HandleFunc("/api/users/3/", DeleteUser)
+	mux.HandleFunc("/api/users/2", CreateNewUser)
+	mux.HandleFunc("/api/users/3", DeleteUser)
 
 	mux.HandleFunc("/api/auth", sendNewAccess)
 
-	mux.HandleFunc("/api/file/2/", httpFileUploadRequest)
+	mux.HandleFunc("/api/file/2", httpFileUploadRequest)
 
 	fmt.Println("Started successfull")
 	http.ListenAndServe(":8080", mux)
@@ -35,6 +35,12 @@ func main() {
 
 // TODO: check function and refactor
 func httpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
+
+	// only accept POST requests
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	// checks if the client is autorized
 	authorized, userName := authen.AuthorizeWithToken(r.Header.Get("Authorization"))
@@ -57,10 +63,16 @@ func httpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 
 // TODO: check function and refactor
 func sendNewAccess(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	credentials := r.Header.Get("Authorization")
 	encoded, err := base64.StdEncoding.DecodeString(credentials)
 
-	if err != nil {
+	if err != nil || string(encoded) == "" {
 		w.WriteHeader(http.StatusBadGateway)
 		return
 	}

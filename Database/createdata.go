@@ -23,11 +23,12 @@ func CreateNewToken(token string, expiration time.Time) {
 }
 
 // Creates a new user
-func CreateNewUser(user UserStruct) {
+func CreateNewUser(user UserStruct) bool {
 	db := CreateDBCon()
 
 	if db == nil {
 		logging.LogEntry("[Error]", "Cannot connect to db!")
+		return false
 	}
 
 	defer db.Close()
@@ -36,5 +37,7 @@ func CreateNewUser(user UserStruct) {
 
 	if err != nil {
 		logging.LogEntry("[Error]", err.Error())
+		return false
 	}
+	return true
 }
