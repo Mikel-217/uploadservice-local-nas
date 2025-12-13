@@ -5,11 +5,19 @@ import (
 	"io"
 	"net/http"
 
+	authentication "mikel-kunze.com/uploadservice/Authentication"
 	database "mikel-kunze.com/uploadservice/Database"
 )
 
-// TODO: add authentication!!
+// Handels the requests to create or delete a directory
 func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
+
+	authorized, userName := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
+
+	if !authorized || userName == "" {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
 
 	body, err := io.ReadAll(r.Body)
 

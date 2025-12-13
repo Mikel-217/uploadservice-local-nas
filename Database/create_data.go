@@ -41,3 +41,23 @@ func CreateNewUser(user UserStruct) bool {
 	}
 	return true
 }
+
+// Creates a new user directory in the database
+func CreateNewUserDirectory(dir *UserDirectorys) bool {
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to db!")
+		return false
+	}
+
+	defer db.Close()
+
+	_, err := db.Exec("INSERT INTO UserDirectorys (DirID, UserID, DirName, DirPath) VALUES (DEFAULT, ?, ?, ?)", dir.UserID, dir.DirName, dir.DirPath)
+
+	if err != nil {
+		logging.LogEntry("[Error]", err.Error())
+		return false
+	}
+	return true
+}
