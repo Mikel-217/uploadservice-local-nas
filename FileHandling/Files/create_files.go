@@ -14,17 +14,15 @@ import (
 var currFileDir = "mnt/voldata/"
 var UserDirection = ""
 
-func HandleUpload(files multipart.Form, userFileDir string) error {
+func HandleUpload(files multipart.Form, authToken string) error {
 
 	if len(files.File["attachments"]) <= 0 {
 		return errors.New("Files Empty")
 	}
 
-	getUserDir(userFileDir)
+	getUserDir(authToken)
 
-	_, err := os.Stat(UserDirection)
-
-	if err != nil {
+	if _, err := os.Stat(UserDirection); err != nil {
 		return err
 	}
 
@@ -55,17 +53,12 @@ func HandleUpload(files multipart.Form, userFileDir string) error {
 	return nil
 }
 
-// TODO: get parent path out of config.json
 // TODO: get user dir via DB
-
 // Gets the user dir
-// if username contains an ";" it has specifiet an direction
-// userName;Directory
-func getUserDir(userFileDir string) {
+func getUserDir(token string) {
+	strings.Replace(token, "Baerer", "", 0)
 
-	if strings.Contains(userFileDir, ";") {
-		splitetusr := strings.Split(userFileDir, ";")
-		UserDirection = path.Join(currFileDir, splitetusr[0], splitetusr[1])
-	}
-	UserDirection = path.Join(currFileDir, userFileDir)
+	// TODO: get data out of jwt and get the user by id
+	// Also think about getting the right dir :)
+
 }

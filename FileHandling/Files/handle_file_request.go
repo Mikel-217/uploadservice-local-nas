@@ -10,26 +10,29 @@ import (
 // TODO: check function and refactor
 func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 
-	// only accept POST requests
-	if r.Method != "POST" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	// checks if the client is autorized
 	authorized, userName := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
 
 	if !authorized || userName == "" {
-		http.Error(w, "forbidden", http.StatusForbidden)
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
-
 	logging.LogEntry("[Access]: Upload ", authentication.GetIP(r))
 	r.ParseMultipartForm(20 << 30)
 
-	if err := HandleUpload(*r.MultipartForm, userName); err != nil {
-		http.Error(w, "Error creating file", http.StatusInternalServerError)
-		return
+	switch r.Method {
+	case "POST":
+		if err := HandleUpload(*r.MultipartForm, r.Header.Get("Authorization")); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	case "DELETE":
+		if err := DeleteFiles(*r); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	default:
+		w.WriteHeader(http.StatusBadRequest)
 	}
 
 	w.WriteHeader(http.StatusOK)

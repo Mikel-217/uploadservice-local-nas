@@ -21,13 +21,13 @@ func SendNewAccess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isAuthorized, userName := AuthorizeWithOutToken(string(encoded))
+	isAuthorized, userStruct := AuthorizeWithOutToken(string(encoded))
 
 	if !isAuthorized {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	} else {
-		token, err := GenerateNewAccesstoken(userName)
+		token, err := GenerateNewAccesstoken(userStruct)
 
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)

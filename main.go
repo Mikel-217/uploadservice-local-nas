@@ -23,14 +23,21 @@ func main() {
 	authen.JWTKey = GetKey()
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/users/2", users.CreateNewUser)
-	mux.HandleFunc("/api/users/3", users.DeleteUser)
 
+	// User Requests
+	mux.HandleFunc("/api/users/2", users.CreateNewUser) // creates a new User
+	mux.HandleFunc("/api/users/3", users.DeleteUser)    // deletes a User
+
+	// Authentication requests
 	mux.HandleFunc("/api/auth", authen.SendNewAccess)
 
-	mux.HandleFunc("/api/file/2", files.HttpFileUploadRequest)
-	mux.HandleFunc("/api/dir/2", directorys.HttpDirRequest)
-	mux.HandleFunc("/api/dir/3", directorys.HttpDirRequest)
+	// File requests
+	mux.HandleFunc("/api/file/2", files.HttpFileUploadRequest) // for uploading
+	mux.HandleFunc("/api/file/3", files.HttpFileUploadRequest) // deletes a files
+
+	// Directory requests
+	mux.HandleFunc("/api/dir/2", directorys.HttpDirRequest) // for creating dirs
+	mux.HandleFunc("/api/dir/3", directorys.HttpDirRequest) // for deleting dirs
 
 	fmt.Println("Started successfull")
 	fmt.Println(http.ListenAndServe(":8080", mux))

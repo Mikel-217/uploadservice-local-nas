@@ -39,24 +39,25 @@ func AuthorizeWithToken(token string) (bool, string) {
 }
 
 // If the User has no token --> he gets a new one
-func AuthorizeWithOutToken(authData string) (bool, string) {
+func AuthorizeWithOutToken(authData string) (bool, database.UserStruct) {
 
 	credentials := strings.Split(authData, ";")
 	user := database.GetUserByName(credentials[0])
 
 	if user.UserName == credentials[0] && user.PW == credentials[1] {
-		return true, user.UserName
+		return true, user
 	}
 
-	return false, ""
+	return false, database.UserStruct{}
 }
 
 // Generates a new JWT for the user to login faster --> gets send to the frontend --> sets the cookie there
-func GenerateNewAccesstoken(username string) (string, error) {
+func GenerateNewAccesstoken(user database.UserStruct) (string, error) {
 	expiraionTime := time.Now().Add(24 * time.Hour)
 
 	claims := &Claims{
-		Username: username,
+		UserID:   user.ID,
+		Username: user.UserName,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiraionTime),
 		},
