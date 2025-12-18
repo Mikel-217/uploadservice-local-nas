@@ -15,6 +15,14 @@ type UserDirectorys struct {
 	DirPath string
 }
 
+type UserFiles struct {
+	FileID   uint
+	FileName string
+	FilePath string
+	DirID    uint // foreign key for Dir
+	UserID   uint // foreign key for User
+}
+
 type ActiveAccessTokens struct {
 	TokenID        uint
 	ActiveToken    string

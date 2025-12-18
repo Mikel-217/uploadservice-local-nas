@@ -25,3 +25,16 @@ CREATE TABLE ActiveAccessTokens (
 
     PRIMARY KEY (TokenID)
 );
+
+
+CREATE TABLE UserFiles (
+    FileID int NOT NULL AUTO_INCREMENT,
+    FileName varchar(200),
+    FilePath varchar(255),
+    DirID int NOT NULL,
+    UserID int NOT NULL,
+
+    PRIMARY KEY (FileID),
+    FOREIGN KEY (DirID) REFERENCES UserDirectorys(DirID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);

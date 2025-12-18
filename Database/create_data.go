@@ -61,3 +61,23 @@ func CreateNewUserDirectory(dir *UserDirectorys) bool {
 	}
 	return true
 }
+
+// Creates a new file in the database table
+// returns a bool to indicate success
+func CreateNewFile(file *UserFiles) bool {
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to db!")
+		return false
+	}
+
+	defer db.Close()
+
+	if _, err := db.Exec("INSERT INTO UserFiles (FileID, FileName, FilePath, DirID, UserID) (DEFAULT, ?, ?, ?, ?);", file.FileName, file.FilePath, file.DirID, file.UserID); err != nil {
+		logging.LogEntry("[Error", err.Error())
+		return false
+	}
+
+	return true
+}

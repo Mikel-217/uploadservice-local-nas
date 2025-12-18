@@ -95,3 +95,9 @@ func DeleteAccesstoken(token *ActiveAccessTokens) bool {
 
 	return true
 }
+
+// Deletes a file in the database by the given struct
+func DeleteUserFile(file *UserFiles) bool {
+
+	return true
+}
