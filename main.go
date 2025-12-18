@@ -32,10 +32,12 @@ func main() {
 	mux.HandleFunc("/api/auth", authen.SendNewAccess)
 
 	// File requests
+	mux.HandleFunc("/api/file/1", files.HttpFileUploadRequest) // for getting all files
 	mux.HandleFunc("/api/file/2", files.HttpFileUploadRequest) // for uploading
 	mux.HandleFunc("/api/file/3", files.HttpFileUploadRequest) // deletes a files
 
 	// Directory requests
+	mux.HandleFunc("/api/dir/1", directorys.HttpDirRequest) // for getting all dirs
 	mux.HandleFunc("/api/dir/2", directorys.HttpDirRequest) // for creating dirs
 	mux.HandleFunc("/api/dir/3", directorys.HttpDirRequest) // for deleting dirs
 

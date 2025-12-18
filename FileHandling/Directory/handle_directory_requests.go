@@ -7,6 +7,7 @@ import (
 
 	authentication "mikel-kunze.com/uploadservice/Authentication"
 	database "mikel-kunze.com/uploadservice/Database"
+	logging "mikel-kunze.com/uploadservice/Logging"
 )
 
 // Handels the requests to create or delete a directory
@@ -34,23 +35,44 @@ func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	// If get --> should return all User dirs
+	case "GET":
+		userDirs := database.GetUserDirs(userDir.UserID)
+
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		data, err := json.Marshal(userDirs)
+
+		if err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
+	// If post --> create a new User dir
 	case "POST":
 		success := CreateUserDir(userDir)
 		if !success {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		} else {
 			break
 		}
+	// If delete --> delete the given dir
 	case "DELETE":
 		success := DeleteUserDir(userDir)
 		if !success {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		} else {
 			break
 		}
+	// If none of those obove -> bad request
 	default:
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
+	// always write 200 at the end, if nothing else was send --> bad pracitce ?
 	w.WriteHeader(http.StatusOK)
 }

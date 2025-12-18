@@ -6,7 +6,6 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
-	"strings"
 )
 
 // TODO: change to dynamic for win and linux
@@ -56,7 +55,6 @@ func HandleUpload(files multipart.Form, authToken string) error {
 // TODO: get user dir via DB
 // Gets the user dir
 func getUserDir(token string) {
-	strings.Replace(token, "Baerer", "", 0)
 
 	// TODO: get data out of jwt and get the user by id
 	// Also think about getting the right dir :)

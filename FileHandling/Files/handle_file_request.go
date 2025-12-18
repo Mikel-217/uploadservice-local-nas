@@ -7,6 +7,8 @@ import (
 	logging "mikel-kunze.com/uploadservice/Logging"
 )
 
+// HTTP-Header field with the directoryID -> maybe other solution? -> base64 encoded
+
 // TODO: check function and refactor
 func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 
@@ -17,10 +19,15 @@ func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
+
 	logging.LogEntry("[Access]: Upload ", authentication.GetIP(r))
 	r.ParseMultipartForm(20 << 30)
 
 	switch r.Method {
+	case "GET":
+		// TODO: implement getting all files
+		w.WriteHeader(http.StatusBadGateway)
+		return
 	case "POST":
 		if err := HandleUpload(*r.MultipartForm, r.Header.Get("Authorization")); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -33,6 +40,7 @@ func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 		}
 	default:
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
