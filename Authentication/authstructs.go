@@ -8,7 +8,8 @@ type Credentials struct {
 }
 
 type Claims struct {
-	UserID   uint
-	Username string
+	UserID        uint
+	Username      string
+	UserDirectory string // Directory Name, so not the path
 	jwt.RegisteredClaims
 }

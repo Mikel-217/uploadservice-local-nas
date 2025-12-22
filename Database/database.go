@@ -81,3 +81,21 @@ func CheckTokenExistence(token string) bool {
 
 	return true
 }
+
+func GetDirectoryByName(dirName string) UserDirectorys {
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to db!")
+	}
+
+	defer db.Close()
+
+	var userDir UserDirectorys
+
+	if err := db.QueryRow("SELECT * FROM UserDirectorys WHERE DirName = ?", dirName).Scan(&userDir.DirID, &userDir.UserID, &userDir.DirName, &userDir.DirPath); err != nil {
+		logging.LogEntry("[Error]", err.Error())
+	}
+
+	return userDir
+}

@@ -56,8 +56,9 @@ func GenerateNewAccesstoken(user database.UserStruct) (string, error) {
 	expiraionTime := time.Now().Add(24 * time.Hour)
 
 	claims := &Claims{
-		UserID:   user.ID,
-		Username: user.UserName,
+		UserID:        user.ID,
+		Username:      user.UserName,
+		UserDirectory: "DEFAULT_DIR",
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiraionTime),
 		},
