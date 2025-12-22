@@ -9,9 +9,9 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt/v4"
-	authentication "mikel-kunze.com/uploadservice/Authentication"
-	database "mikel-kunze.com/uploadservice/Database"
-	logging "mikel-kunze.com/uploadservice/Logging"
+	authentication "mikel-kunze.com/uploadservice/authentication"
+	database "mikel-kunze.com/uploadservice/database"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // TODO: change to dynamic for win and linux

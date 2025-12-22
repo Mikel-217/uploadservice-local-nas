@@ -5,9 +5,9 @@ import (
 	"io"
 	"net/http"
 
-	authentication "mikel-kunze.com/uploadservice/Authentication"
-	database "mikel-kunze.com/uploadservice/Database"
-	logging "mikel-kunze.com/uploadservice/Logging"
+	authentication "mikel-kunze.com/uploadservice/authentication"
+	database "mikel-kunze.com/uploadservice/database"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Handels the requests to create or delete a directory

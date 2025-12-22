@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	authen "mikel-kunze.com/uploadservice/Authentication"
-	directorys "mikel-kunze.com/uploadservice/FileHandling/Directory"
-	files "mikel-kunze.com/uploadservice/FileHandling/Files"
+	authen "mikel-kunze.com/uploadservice/authentication"
+	directorys "mikel-kunze.com/uploadservice/file_handling/directory"
+	files "mikel-kunze.com/uploadservice/file_handling/files"
 
-	users "mikel-kunze.com/uploadservice/User"
+	users "mikel-kunze.com/uploadservice/user"
 )
 
 func main() {

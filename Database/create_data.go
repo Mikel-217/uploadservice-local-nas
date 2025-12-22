@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"time"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Sets a new Active token to DB

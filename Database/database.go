@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Gets a user by the given username --> Returns a Userstruct

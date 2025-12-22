@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	database "mikel-kunze.com/uploadservice/Database"
+	database "mikel-kunze.com/uploadservice/database"
 )
 
 // The secret

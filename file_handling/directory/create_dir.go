@@ -4,8 +4,8 @@ import (
 	"errors"
 	"os"
 
-	database "mikel-kunze.com/uploadservice/Database"
-	logging "mikel-kunze.com/uploadservice/Logging"
+	database "mikel-kunze.com/uploadservice/database"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 func CreateUserDir(dir database.UserDirectorys) bool {

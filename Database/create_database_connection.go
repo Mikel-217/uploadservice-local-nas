@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"os"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 func CreateDBCon() *sql.DB {

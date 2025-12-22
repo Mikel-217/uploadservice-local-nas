@@ -3,7 +3,7 @@ package database
 import (
 	"strconv"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Deletes a user by the given id and returns a bool to indicate success

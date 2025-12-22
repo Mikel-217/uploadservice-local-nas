@@ -3,8 +3,8 @@ package files
 import (
 	"net/http"
 
-	authentication "mikel-kunze.com/uploadservice/Authentication"
-	logging "mikel-kunze.com/uploadservice/Logging"
+	authentication "mikel-kunze.com/uploadservice/authentication"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // HTTP-Header field with the directoryID -> maybe other solution? -> base64 encoded
