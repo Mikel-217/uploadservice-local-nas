@@ -18,7 +18,7 @@ func GetUserByName(userName string) UserStruct {
 
 	var user UserStruct
 
-	err := db.QueryRow("SELECT * FROM Users WHERE UserName = ?", userName).Scan(&user.ID, &user.UserName, &user.UserName)
+	err := db.QueryRow("SELECT * FROM Users WHERE UserName = ?", userName).Scan(&user.ID, &user.UserName, &user.PW)
 
 	if err != nil {
 		logging.LogEntry("[Error]", err.Error())

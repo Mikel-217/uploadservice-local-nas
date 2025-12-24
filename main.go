@@ -8,19 +8,20 @@ import (
 	authen "mikel-kunze.com/uploadservice/authentication"
 	directorys "mikel-kunze.com/uploadservice/file_handling/directory"
 	files "mikel-kunze.com/uploadservice/file_handling/files"
+	"mikel-kunze.com/uploadservice/startup"
 
 	users "mikel-kunze.com/uploadservice/user"
 )
 
 func main() {
-	correctSetup, err := OnServerStartup()
+	correctSetup, err := startup.OnServerStartup()
 
 	if !correctSetup {
 		log.Fatal("Failed to start", err)
 	}
 
 	// sets the jwt secret. Is needed bevor startup!
-	authen.JWTKey = GetKey()
+	authen.JWTKey = startup.GetKey()
 
 	mux := http.NewServeMux()
 

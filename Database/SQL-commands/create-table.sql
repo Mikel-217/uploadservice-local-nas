@@ -3,7 +3,7 @@ CREATE TABLE Users (
     UserName varchar(255),
     UserPW varchar(255),
 
-    PRIMARY KEY (ID)
+    PRIMARY KEY (UserID)
 );
 
 
@@ -19,7 +19,7 @@ CREATE TABLE UserDirectorys (
 
 
 CREATE TABLE ActiveAccessTokens (
-    TokenID int NOT NULL,
+    TokenID int NOT NULL AUTO_INCREMENT,
     ActiveToken varchar(255),
     ExpirationDate TIMESTAMP,
 

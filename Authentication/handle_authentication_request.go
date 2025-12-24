@@ -3,6 +3,8 @@ package authentication
 import (
 	"encoding/base64"
 	"net/http"
+
+	"mikel-kunze.com/uploadservice/logging"
 )
 
 // Sends a new authentication token to the user
@@ -30,6 +32,7 @@ func SendNewAccess(w http.ResponseWriter, r *http.Request) {
 		token, err := GenerateNewAccesstoken(userStruct)
 
 		if err != nil {
+			logging.LogEntry("[Error]", err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

@@ -5,11 +5,13 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+
 	database "mikel-kunze.com/uploadservice/database"
+	"mikel-kunze.com/uploadservice/startup"
 )
 
 // The secret
-var JWTKey = []byte("")
+var JWTKey = startup.GetKey()
 
 // Checks for a valide jwt token and if the token is saved in the database
 func AuthorizeWithToken(token string) (bool, string) {
