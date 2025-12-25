@@ -14,6 +14,7 @@ import (
 var JWTKey = startup.GetKey()
 
 // Checks for a valide jwt token and if the token is saved in the database
+// TODO: return the Claims
 func AuthorizeWithToken(token string) (bool, string) {
 
 	strings.Replace(token, "Baerer", "", 0)

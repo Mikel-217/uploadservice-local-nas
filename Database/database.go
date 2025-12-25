@@ -82,6 +82,7 @@ func CheckTokenExistence(token string) bool {
 	return true
 }
 
+// Gets a Directory by the name of a directory -> Returns a struct
 func GetDirectoryByName(dirName string) UserDirectorys {
 	db := CreateDBCon()
 
@@ -98,4 +99,37 @@ func GetDirectoryByName(dirName string) UserDirectorys {
 	}
 
 	return userDir
+}
+
+// Gets all files by the given user-id -> Returns a slice
+func GetUserFiles(userID uint) []UserFiles {
+
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to database")
+	}
+
+	defer db.Close()
+
+	userFiles := make([]UserFiles, 500)
+
+	rows, err := db.Query("SELECT * FROM UserFiles WHERE UserID = ?", userID)
+
+	if err != nil {
+		logging.LogEntry("[Error]", err.Error())
+	}
+
+	for rows.Next() {
+
+		var userFile UserFiles
+		if err := rows.Scan(&userFile.FileID, &userFile.FileName, &userFile.FilePath, &userFile.DirID, &userFile.UserID); err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			continue
+		}
+
+		userFiles = append(userFiles, userFile)
+	}
+
+	return userFiles
 }

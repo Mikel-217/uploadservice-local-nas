@@ -1,9 +1,11 @@
 package files
 
 import (
+	"encoding/json"
 	"net/http"
 
 	authentication "mikel-kunze.com/uploadservice/authentication"
+	"mikel-kunze.com/uploadservice/database"
 	logging "mikel-kunze.com/uploadservice/logging"
 )
 
@@ -25,8 +27,20 @@ func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		// TODO: implement getting all files
-		w.WriteHeader(http.StatusBadGateway)
+
+		// gets all files from the given user
+		files := database.GetUserFiles(0)
+
+		data, err := json.Marshal(files)
+
+		if err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
 		return
 	case "POST":
 		if err := HandleUpload(*r.MultipartForm, r.Header.Get("Authorization")); err != nil {

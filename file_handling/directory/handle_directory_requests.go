@@ -15,6 +15,9 @@ func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
 
 	authorized, userName := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
 
+	// TODO: revisit me!!!!
+	// Bad practice to send stuff in a GET-Request Body!!
+
 	if !authorized || userName == "" {
 		w.WriteHeader(http.StatusForbidden)
 		return
