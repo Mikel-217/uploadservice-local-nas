@@ -1,4 +1,4 @@
-package main
+package startup
 
 import (
 	"database/sql"
@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"mikel-kunze.com/uploadservice/logging"
 )
 
 // does some things on startup
@@ -25,6 +26,7 @@ func OnServerStartup() (bool, error) {
 // TODO: dont forgett to add connection string to enviroment variabless
 func checkDB() bool {
 	if _, err := sql.Open("mysql", os.Getenv("connection-string")); err != nil {
+		logging.LogEntry("[Error]", err.Error())
 		return false
 	}
 	return true

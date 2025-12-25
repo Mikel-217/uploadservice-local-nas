@@ -3,7 +3,7 @@ package database
 import (
 	"strconv"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Deletes a user by the given id and returns a bool to indicate success
@@ -92,6 +92,12 @@ func DeleteAccesstoken(token *ActiveAccessTokens) bool {
 		logging.LogEntry("[Error]", err.Error())
 		return false
 	}
+
+	return true
+}
+
+// Deletes a file in the database by the given struct
+func DeleteUserFile(file *UserFiles) bool {
 
 	return true
 }

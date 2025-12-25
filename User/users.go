@@ -6,10 +6,11 @@ import (
 	"io"
 	"net/http"
 
-	database "mikel-kunze.com/uploadservice/Database"
-	logging "mikel-kunze.com/uploadservice/Logging"
+	database "mikel-kunze.com/uploadservice/database"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
+// TODO: Add authentication!!
 func CreateNewUser(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {

@@ -3,7 +3,7 @@ CREATE TABLE Users (
     UserName varchar(255),
     UserPW varchar(255),
 
-    PRIMARY KEY (ID)
+    PRIMARY KEY (UserID)
 );
 
 
@@ -19,9 +19,22 @@ CREATE TABLE UserDirectorys (
 
 
 CREATE TABLE ActiveAccessTokens (
-    TokenID int NOT NULL,
+    TokenID int NOT NULL AUTO_INCREMENT,
     ActiveToken varchar(255),
     ExpirationDate TIMESTAMP,
 
     PRIMARY KEY (TokenID)
+);
+
+
+CREATE TABLE UserFiles (
+    FileID int NOT NULL AUTO_INCREMENT,
+    FileName varchar(200),
+    FilePath varchar(255),
+    DirID int NOT NULL,
+    UserID int NOT NULL,
+
+    PRIMARY KEY (FileID),
+    FOREIGN KEY (DirID) REFERENCES UserDirectorys(DirID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );

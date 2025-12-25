@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	logging "mikel-kunze.com/uploadservice/Logging"
+	logging "mikel-kunze.com/uploadservice/logging"
 )
 
 // Gets a user by the given username --> Returns a Userstruct
@@ -18,7 +18,7 @@ func GetUserByName(userName string) UserStruct {
 
 	var user UserStruct
 
-	err := db.QueryRow("SELECT * FROM Users WHERE UserName = ?", userName).Scan(&user.ID, &user.UserName, &user.UserName)
+	err := db.QueryRow("SELECT * FROM Users WHERE UserName = ?", userName).Scan(&user.ID, &user.UserName, &user.PW)
 
 	if err != nil {
 		logging.LogEntry("[Error]", err.Error())
@@ -80,4 +80,56 @@ func CheckTokenExistence(token string) bool {
 	}
 
 	return true
+}
+
+// Gets a Directory by the name of a directory -> Returns a struct
+func GetDirectoryByName(dirName string) UserDirectorys {
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to db!")
+	}
+
+	defer db.Close()
+
+	var userDir UserDirectorys
+
+	if err := db.QueryRow("SELECT * FROM UserDirectorys WHERE DirName = ?", dirName).Scan(&userDir.DirID, &userDir.UserID, &userDir.DirName, &userDir.DirPath); err != nil {
+		logging.LogEntry("[Error]", err.Error())
+	}
+
+	return userDir
+}
+
+// Gets all files by the given user-id -> Returns a slice
+func GetUserFiles(userID uint) []UserFiles {
+
+	db := CreateDBCon()
+
+	if db == nil {
+		logging.LogEntry("[Error]", "Cannot connect to database")
+	}
+
+	defer db.Close()
+
+	userFiles := make([]UserFiles, 500)
+
+	rows, err := db.Query("SELECT * FROM UserFiles WHERE UserID = ?", userID)
+
+	if err != nil {
+		logging.LogEntry("[Error]", err.Error())
+	}
+
+	for rows.Next() {
+
+		var userFile UserFiles
+		if err := rows.Scan(&userFile.FileID, &userFile.FileName, &userFile.FilePath, &userFile.DirID, &userFile.UserID); err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			continue
+		}
+
+		userFiles = append(userFiles, userFile)
+	}
+
+	return userFiles
 }
