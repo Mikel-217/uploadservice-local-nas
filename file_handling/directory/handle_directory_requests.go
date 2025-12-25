@@ -13,34 +13,17 @@ import (
 // Handels the requests to create or delete a directory
 func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
 
-	authorized, userName := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
+	authorized, claims := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
 
-	// TODO: revisit me!!!!
-	// Bad practice to send stuff in a GET-Request Body!!
-
-	if !authorized || userName == "" {
+	if !authorized {
 		w.WriteHeader(http.StatusForbidden)
-		return
-	}
-
-	body, err := io.ReadAll(r.Body)
-
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	var userDir database.UserDirectorys
-
-	if err := json.Unmarshal(body, &userDir); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	switch r.Method {
 	// If get --> should return all User dirs
 	case "GET":
-		userDirs := database.GetUserDirs(userDir.UserID)
+		userDirs := database.GetUserDirs(claims.UserID)
 
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		data, err := json.Marshal(userDirs)
@@ -54,7 +37,25 @@ func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
 		w.Write(data)
 	// If post --> create a new User dir
 	case "POST":
+
+		body, err := io.ReadAll(r.Body)
+
+		if err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		var userDir database.UserDirectorys
+
+		if err := json.Unmarshal(body, &userDir); err != nil {
+			logging.LogEntry("[Error]", err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		success := CreateUserDir(userDir)
+
 		if !success {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -63,7 +64,7 @@ func HttpDirRequest(w http.ResponseWriter, r *http.Request) {
 		}
 	// If delete --> delete the given dir
 	case "DELETE":
-		success := DeleteUserDir(userDir)
+		success := DeleteUserDir(database.GetDirectoryByName(claims.UserDirectory))
 		if !success {
 			w.WriteHeader(http.StatusInternalServerError)
 			return

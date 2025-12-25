@@ -14,8 +14,8 @@ import (
 var JWTKey = startup.GetKey()
 
 // Checks for a valide jwt token and if the token is saved in the database
-// TODO: return the Claims
-func AuthorizeWithToken(token string) (bool, string) {
+// Returns the bool and the claims
+func AuthorizeWithToken(token string) (bool, *Claims) {
 
 	strings.Replace(token, "Baerer", "", 0)
 
@@ -24,21 +24,21 @@ func AuthorizeWithToken(token string) (bool, string) {
 	tkn, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) { return JWTKey, nil })
 
 	if err != nil || !tkn.Valid {
-		return false, ""
+		return false, &Claims{}
 	}
 
 	// searches the token in the DB
 	if !database.CheckTokenExistence(token) {
-		return false, ""
+		return false, &Claims{}
 	}
 
 	tokenClaims := tkn.Claims.(*Claims)
 
 	if tokenClaims.Username == "" {
-		return false, ""
+		return false, &Claims{}
 	}
 
-	return true, tokenClaims.Username
+	return true, tokenClaims
 }
 
 // If the User has no token --> he gets a new one

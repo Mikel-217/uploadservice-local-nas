@@ -15,9 +15,10 @@ import (
 func HttpFileUploadRequest(w http.ResponseWriter, r *http.Request) {
 
 	// checks if the client is autorized
-	authorized, userName := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
+	// Claims are currently not needed
+	authorized, _ := authentication.AuthorizeWithToken(r.Header.Get("Authorization"))
 
-	if !authorized || userName == "" {
+	if !authorized {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
